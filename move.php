@@ -28,10 +28,13 @@ if (!empty($_POST)) {
     }
 }
 // if fields are not empty then connect to the database and insert data
-if ($isSuccess) {
+if ($isSuccess) try  {
     $db = Database::connect();
     $statement = $db->prepare("INSERT INTO movements (article_id, quantity, movement_type_id, purchase_id) values(?, ?, ?, ?)");
     $statement->execute(array($article, $quantity,$type,$purchase));
+     echo 'Record updated successfully'; // success message
+} catch( PDOException $e ) {
+    echo 'Error, Record not inserted'; // error message
     Database::disconnect();
     header("Location: index.php");
 }

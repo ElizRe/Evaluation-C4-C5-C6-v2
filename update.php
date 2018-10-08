@@ -32,12 +32,16 @@ if (!empty($_POST)) {
         $isSuccess = false;
     }
 }
-if ($isSuccess) {
+if ($isSuccess) try{
     $db = Database::connect();
-    {
+  
         $statement = $db->prepare("UPDATE articles set name = ?, category_id = ?, unit_id = ?, sales_price = ? WHERE id = ?");
         $statement->execute(array($name,$category_id,$unit_id,$sales_price,$id));
-    }
+        echo 'Record updated successfully'; // success message
+} catch( PDOException $e ) {
+    echo 'Error, Record not updated'; // error message
+
+
         Database::disconnect();
         header("Location: index.php");
 } else {

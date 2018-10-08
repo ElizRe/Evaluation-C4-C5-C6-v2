@@ -27,10 +27,13 @@ if (!empty($_POST)) {
         $isSuccess = false;
     }
 }
-if ($isSuccess) {
+if ($isSuccess) try {
     $db = Database::connect();
     $statement = $db->prepare("INSERT INTO articles (name,category_id,unit_id,sales_price) values(?, ?, ?, ?)");
     $statement->execute(array($name, $category,$unit,$price));
+     echo 'Record added successfully'; // success message
+} catch( PDOException $e ) {
+    echo 'Error, Record not inserted'; // error message
     Database::disconnect();
     header("Location: index.php");
 }
